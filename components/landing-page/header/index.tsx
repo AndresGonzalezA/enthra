@@ -116,9 +116,7 @@ const Header = () => {
           <ThemeButton />
           <Button asChild size="sm">
           <Link href="/es/auth/login" className="text-sm font-semibold">
-                <span className="w-4 h-4 mr-1.5"></span>
-                Iniciar sesión
-              </Link>
+                <span className="w-4 h-4 mr-1.5"></span>Iniciar sesión</Link>
           </Button>
         </div>
       </nav>

@@ -4,7 +4,7 @@ import react from "@/public/images/landing-page/react.png"
 import next from "@/public/images/landing-page/next.png"
 import tailwind from "@/public/images/landing-page/tailwind.png"
 import radix from "@/public/images/landing-page/radix.png"
-import nextAuth from "@/public/images/landing-page/next-auth.png"
+
 import shadeCn from "@/public/images/landing-page/shade-cn.png"
 import swiper from "@/public/images/landing-page/swiper.png"
 import recharts from "@/public/images/landing-page/recharts.png"
@@ -61,11 +61,6 @@ const ProjectTools = () => {
       logo: nextTheme,
       title: "Next Theme",
       href: "https://www.npmjs.com/package/next-themes"
-    },
-    {
-      logo: nextAuth,
-      title: "Next Auth",
-      href: "https://next-auth.js.org/"
     },
     {
       logo: axios,

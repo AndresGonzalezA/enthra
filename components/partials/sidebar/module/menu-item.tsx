@@ -8,33 +8,32 @@ import { useThemeStore } from "@/store";
 function NavLink({ childItem, locationName, trans }: {
   childItem: any;
   locationName: string;
-  trans: any
+  trans: any;
 }) {
-  const { href, icon, title, badge } = childItem;
+  const { href, icon, title, badge, onClick } = childItem;
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={cn(
-        "flex  font-medium  text-sm capitalize px-[10px] py-3 gap-3 rounded-md cursor-pointer",
+        "flex font-medium text-sm capitalize px-[10px] py-3 gap-3 rounded-md cursor-pointer",
         {
-          "bg-primary text-primary-foreground": isLocationMatch(
-            href,
-            locationName
-          ),
-          " text-default-600": !isLocationMatch(href, locationName),
+          "bg-primary text-primary-foreground": isLocationMatch(href, locationName),
+          "text-default-600": !isLocationMatch(href, locationName),
         }
       )}
     >
       {icon && (
-        <span className="inline-flex items-center   flex-grow-0">
-          <childItem.icon className=" h-5 w-5" />
+        <span className="inline-flex items-center flex-grow-0">
+          <childItem.icon className="h-5 w-5" />
         </span>
       )}
       <div className="flex-grow truncate">{translate(title, trans)}</div>
-      {badge && <Badge className="rounded h-min ">{badge}</Badge>}
+      {badge && <Badge className="rounded h-min">{badge}</Badge>}
     </Link>
   );
 }
+
 
 const MenuItem = ({
   childItem,

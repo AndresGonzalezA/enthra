@@ -7,7 +7,7 @@ import img3 from "@/public/images/country/india.png";
 import img4 from "@/public/images/country/spain.png";
 import img5 from "@/public/images/country/bangladesh.png";
 import img6 from "@/public/images/country/brazil.png";
-import world from "../../../../solar/components/maps-vector/worldmap.json";
+import world from "./maps-vector/worldmap.json";
 import { VectorMap } from "@south-paw/react-vector-maps";
 import Link from "next/link";
 

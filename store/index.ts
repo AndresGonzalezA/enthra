@@ -25,7 +25,7 @@ export const useThemeStore = create<ThemeStoreState>()(
       setTheme: (theme) => set({ theme }),
       radius: siteConfig.radius,
       setRadius: (value) => set({ radius: value }),
-      layout: siteConfig.layout,
+      layout: "vertical",
       setLayout: (value) => {
         set({ layout: value });
 

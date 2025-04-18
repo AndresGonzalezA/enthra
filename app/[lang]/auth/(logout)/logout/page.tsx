@@ -1,8 +1,8 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { CognitoUser, CognitoUserPool } from "amazon-cognito-identity-js";
+import { useRouter, useParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { CognitoUser, CognitoUserPool } from "amazon-cognito-identity-js";
 
 const poolData = {
   UserPoolId: "us-east-1_7H7VPIa0F",
@@ -11,8 +11,10 @@ const poolData = {
 
 const userPool = new CognitoUserPool(poolData);
 
-const LogoutFooter = () => {
+export default function LogoutPage() {
   const router = useRouter();
+  const params = useParams();
+  const lang = params?.lang || "es";
 
   const handleLogout = () => {
     const session = JSON.parse(localStorage.getItem("session") || "{}");
@@ -27,16 +29,14 @@ const LogoutFooter = () => {
     }
 
     localStorage.clear();
-    router.push(`/${navigator.language || "es"}/auth/login`);
+    router.push(`/${lang}/auth/login`);
   };
 
   return (
-    <div className="px-4 py-4">
-      <Button variant="outline" className="w-full" onClick={handleLogout}>
+    <div className="h-screen flex items-center justify-center bg-background">
+      <Button onClick={handleLogout}>
         Cerrar sesión
       </Button>
     </div>
   );
-};
-
-export default LogoutFooter;
+}

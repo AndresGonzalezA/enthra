@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -22,7 +22,6 @@ import { Icon } from "@iconify/react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/components/ui/use-toast";
 import { useMediaQuery } from "@/hooks/use-media-query";
-
 import googleIcon from "@/public/images/auth/google.png";
 import facebook from "@/public/images/auth/facebook.png";
 import twitter from "@/public/images/auth/twitter.png";
@@ -39,6 +38,8 @@ const LogInForm = () => {
   const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
   const { toast } = useToast();
   const router = useRouter();
+  const params = useParams();
+  const lang = params?.lang || "es";
 
   const {
     register,
@@ -88,18 +89,19 @@ const LogInForm = () => {
           },
         })
       );
+
       if (!credentials.Credentials) {
         throw new Error("No se pudieron obtener las credenciales");
-      };
-      
+      }
+
       const groups = payload["cognito:groups"] || [];
       const destino = (
-        (groups.find((g: string) => g.trim().toLowerCase() === "biomedico"))
-          ? "/dashboard/biomedico"
-          : (groups.find((g: string) => g.trim().toLowerCase() === "solar"))
-          ? "/dashboard/solar"
-          : "/dashboard"
-      );      
+        groups.find((g: string) => g.trim().toLowerCase() === "solar")
+          ? `/${lang}/solar`
+          : groups.find((g: string) => g.trim().toLowerCase() === "biomedico")
+          ? `/${lang}/biomedico`
+          : `/${lang}/biomedico`
+      );
 
       localStorage.setItem(
         "session",
@@ -126,11 +128,11 @@ const LogInForm = () => {
 
       router.push(destino);
       reset();
-    } catch (error: any) {
+    } catch {
       toast({
         title: "Error...",
         description: "...",
-      });      
+      });
     } finally {
       setIsPending(false);
     }
@@ -226,47 +228,22 @@ const LogInForm = () => {
         </Button>
       </form>
       <div className="mt-6 xl:mt-8 flex flex-wrap justify-center gap-4">
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-          disabled={isPending}
-        >
-          <Image src={googleIcon} alt="google" className="w-5 h-5" priority={true} />
+        <Button type="button" size="icon" variant="outline" className="rounded-full border-default-300 hover:bg-transparent" disabled={isPending}>
+          <Image src={googleIcon} alt="google" className="w-5 h-5" priority />
         </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-          disabled={isPending}
-        >
-          <Image src={GithubIcon} alt="github" className="w-5 h-5" priority={true} />
+        <Button type="button" size="icon" variant="outline" className="rounded-full border-default-300 hover:bg-transparent" disabled={isPending}>
+          <Image src={GithubIcon} alt="github" className="w-5 h-5" priority />
         </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-        >
-          <Image src={facebook} alt="facebook" className="w-5 h-5" priority={true} />
+        <Button type="button" size="icon" variant="outline" className="rounded-full border-default-300 hover:bg-transparent">
+          <Image src={facebook} alt="facebook" className="w-5 h-5" priority />
         </Button>
-        <Button
-          type="button"
-          size="icon"
-          variant="outline"
-          className="rounded-full border-default-300 hover:bg-transparent"
-        >
-          <Image src={twitter} alt="twitter" className="w-5 h-5" priority={true} />
+        <Button type="button" size="icon" variant="outline" className="rounded-full border-default-300 hover:bg-transparent">
+          <Image src={twitter} alt="twitter" className="w-5 h-5" priority />
         </Button>
       </div>
       <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">
         Don't have an account?
-        <Link href="/auth/register" className="text-primary">
-          {" "}
-          Sign Up{" "}
-        </Link>
+        <Link href="/auth/register" className="text-primary"> Sign Up </Link>
       </div>
     </div>
   );
