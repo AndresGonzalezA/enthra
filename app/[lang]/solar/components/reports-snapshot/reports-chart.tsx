@@ -58,8 +58,7 @@ const ReportsChart = ({ series, chartColor, height = 300, categories = [] }: Rep
             return `${parts[0]}:${parts[1]}`;
           }
           return String(value);
-        },
-            
+        },            
         style: {
           colors: `hsl(${theme?.cssVars[mode === "dark" ? "dark" : "light"].chartLabel})`,
         },
