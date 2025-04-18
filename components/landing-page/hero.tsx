@@ -1,94 +1,148 @@
-import Link from "next/link";
-import Image from "next/image";
-import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import ScreenShot from "@/public/images/landing-page/screenshot.png";
-import DashboardSceenshot from "@/public/images/landing-page/dashboard-screenshot.png";
-import ProfileScreenShot from "@/public/images/landing-page/profile-screenshot.png";
-import CalenderScreenshot from "@/public/images/landing-page/calender-screenshot.png";
+"use client";
 
-const Hero = () => {
-  return (
-    <section
-      className="bg-[url(https://dashboi-one.vercel.app/images/home/hero-bg.png)] bg-cover bg-no-repeat relative"
-      id="home"
-    >
-      <div className="bg-gradient-to-b from-primary/30 to-[#fff] dark:from-primary/20 dark:to-[#0F172A]">
-        <div className="container">
-          <div className=" relative z-10">
-            <div className="pt-32 md:pt-48">
-              <h1 className="max-w-[600px] mx-auto text-xl md:text-2xl xl:text-4xl xl:leading-[52px] font-semibold text-default-900 text-center">
-                <span className="text-primary">DashTail</span> - Tailwind, React
-                Next Admin Dashboard Template
-              </h1>
-              <p className="text-base leading-7 md:text-lg md:leading-8 text-default-700 text-center mt-5 max-w-[800px] mx-auto">
-                DashTail is a developer-friendly, ready-to-use admin template
-                designed for building attractive, scalable, and high-performing
-                web applications, powered by the cutting-edge technologies of
-                Next.js and Tailwind CSS.
-              </p>
-              <div className="flex mt-9 justify-center gap-4 lg:gap-8">
-                <Button asChild size="xl">
-                  <Link href="/dashboard"> View Demo </Link>
-                </Button>
-                <Button asChild variant="outline" size="xl">
-                  <Link href="https://dash-tail.vercel.app/docs/introduction" target="_blank">
-                    Documentation
-                  </Link>
-                </Button>
-              </div>
-            </div>
-          </div>
-          <Image
-            src={DashboardSceenshot}
-            className="relative lg:hidden mt-10" priority={true}
-            alt="screenshot"
-          />
-          <div className="relative  -mt-20 hidden lg:block">
-            <Image src={ScreenShot} alt="screenshot" priority={true} />
-            <motion.div
-              className="absolute left-[11%] 2xl:bottom-5 xl:bottom-10 lg:bottom-2 2xl:w-[280px] xl:w-[250px] lg:w-[200px]"
-              animate={{
-                y: [0, 5, 0],
-              }}
-              transition={{
-                duration: 3,
-                ease: "linear",
-                repeat: Infinity,
-                repeatDelay: 0,
-              }}
-            >
-              <Image
-                src={ProfileScreenShot}
-                alt="screenshot"
-                className="max-w-full h-full"
-                priority={true}
-              />
-            </motion.div>
-            <motion.div
-              className="absolute right-0 2xl:top-[320px] 2xl:w-[370px] xl:top-[296px] xl:w-[340px] top-[220px] w-[280px]"
-              animate={{
-                y: [0, 7, 0],
-              }}
-              transition={{
-                duration: 3,
-                ease: "linear",
-                repeat: Infinity,
-                repeatDelay: 0,
-              }}
-            >
-              <Image
-                src={CalenderScreenshot}
-                alt="screenshot"
-                className="max-w-full h-full"
-                priority={true}
-              />
-            </motion.div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
+import { useState } from "react";
+import { useKeenSlider, KeenSliderPlugin } from "keen-slider/react";
+import "keen-slider/keen-slider.min.css";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+
+const slides = [
+  {
+    title: "Monitoreo solar",
+    text: "Visualiza el rendimiento de tus sistemas solares en tiempo real, desde cualquier lugar.",
+  },
+  {
+    title: "Equipos biomédicos",
+    text: "Localiza y gestiona tus equipos críticos en hospitales con tecnología indoor tracking.",
+  },
+  {
+    title: "Captura desde PLC",
+    text: "Extrae datos de tus procesos industriales para análisis y automatización.",
+  },
+  {
+    title: "Desarrollo a medida",
+    text: "Creamos soluciones IoT totalmente personalizadas para tus procesos únicos.",
+  },
+];
+
+const autoplay: KeenSliderPlugin = (slider) => {
+  let timeout: ReturnType<typeof setTimeout>;
+  let mouseOver = false;
+  const clearNext = () => clearTimeout(timeout);
+  const next = () => {
+    clearNext();
+    if (!mouseOver) timeout = setTimeout(() => slider.next(), 6000);
+  };
+  slider.on("created", () => {
+    slider.container.addEventListener("mouseover", () => {
+      mouseOver = true;
+      clearNext();
+    });
+    slider.container.addEventListener("mouseout", () => {
+      mouseOver = false;
+      next();
+    });
+    next();
+  });
+  slider.on("dragStarted", clearNext);
+  slider.on("animationEnded", next);
+  slider.on("updated", next);
 };
 
-export default Hero;
+export default function Hero() {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [loaded, setLoaded] = useState(false);
+
+  const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>(
+    {
+      loop: true,
+      slideChanged(s) {
+        setCurrentSlide(s.track.details.rel);
+      },
+      created() {
+        setLoaded(true);
+      },
+    },
+    [autoplay]
+  );
+
+  const bgImage = "/images/landing-page/dashboard-screenshot.png";
+
+  return (
+    <section id="hero" className="relative overflow-hidden">
+      {/* Slider */}
+      <div ref={sliderRef} className="keen-slider">
+        {slides.map(({ title, text }, i) => (
+          <div key={i} className="keen-slider__slide">
+            <div
+              className="relative h-[600px] bg-cover bg-center"
+              style={{ backgroundImage: `url('${bgImage}')` }}
+            >
+              <div className="absolute inset-0 bg-white/30 dark:bg-black/50" />
+              <motion.div
+                className="relative z-10 flex flex-col items-center justify-center h-full px-6 text-center text-default-900 dark:text-white max-w-2xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8 }}
+              >
+                <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                  {title}
+                </h2>
+                <p className="mb-6 text-lg">{text}</p>
+                <div className="flex gap-4">
+                  <Button asChild size="lg">
+                    <Link href="#contact">Contáctanos</Link>
+                  </Button>
+                  <Button asChild variant="outline" size="lg">
+                    <Link href="#projecttools">Ver tecnologías</Link>
+                  </Button>
+                </div>
+              </motion.div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Flechas sobrias */}
+      {loaded && instanceRef.current && (
+        <>
+          <button
+            onClick={() => instanceRef.current?.prev()}
+            className="absolute top-1/2 left-4 -translate-y-1/2 p-2 text-white dark:text-white/90 hover:text-primary transition"
+            aria-label="Anterior"
+          >
+            <ChevronLeft size={28} />
+          </button>
+          <button
+            onClick={() => instanceRef.current?.next()}
+            className="absolute top-1/2 right-4 -translate-y-1/2 p-2 text-white dark:text-white/90 hover:text-primary transition"
+            aria-label="Siguiente"
+          >
+            <ChevronRight size={28} />
+          </button>
+        </>
+      )}
+
+      {/* Indicadores */}
+      {loaded && instanceRef.current && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => instanceRef.current?.moveToIdx(idx)}
+              className={`w-3 h-3 rounded-full transition-colors ${
+                idx === currentSlide
+                  ? "bg-primary"
+                  : "bg-white/60 dark:bg-white/30"
+              }`}
+              aria-label={`Slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+      )}
+    </section>
+  );
+}

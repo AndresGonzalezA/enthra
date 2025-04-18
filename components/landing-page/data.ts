@@ -442,48 +442,37 @@ export const demoMenus = [
     ],
   },
 ];
+type MenuItem = {
+  title: string;
+  href: string;
+};
 
-export const menus = [
+export const menus: MenuItem[] = [
   {
-    title: "Elements",
-    href: "#elements",
+    title: "Inicio",
+    href: "#hero",
   },
   {
-    title: "Why Dash Tail",
-    href: "#whyDashTail",
+    title: "Propósito",
+    href: "#aboutus",
   },
   {
-    title: "Pricing",
-    href: "#pricing",
+    title: "Características",
+    href: "#stats",
   },
   {
-    title: "More",
-    child: [
-      {
-        title: "Documentation",
-        href: "/docs/introduction",
-      },
-      {
-        title: "Changelog",
-        href: "/docs/update-log",
-      },
-      {
-        title: "Github Access",
-        href: "https://codeshaperbd.freshdesk.com/support/login",
-      },
-      {
-        title: "Report a bug",
-        href: "https://codeshaperbd.freshdesk.com/support/login",
-      },
-      {
-        title: "Support",
-        href: "https://codeshaperbd.freshdesk.com/support/login",
-      },
-      {
-        title: "Hire Us",
-        href: "https://codeshaper.net/",
-      },
-    ],
+    title: "Tecnología",
+    href: "#projecttools",
+  },
+  {
+    title: "Precios",
+    href: "#pricingplan",
+  },
+  {
+    title: "Contacto",
+    href: "#contact",
   },
 ];
+
+
 export type Menu = typeof menus[number];

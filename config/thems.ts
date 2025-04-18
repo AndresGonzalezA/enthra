@@ -741,5 +741,38 @@ export const themes = [
       },
     },
   },
+  {
+    name: "enthra",
+    activeColor: {
+      light: "36 100% 50%", // naranja brillante
+      dark: "36 100% 60%"
+    },
+    cssVars: {
+      light: {
+        primary: "36 100% 50%", // #F79E00
+        default900: "222 47% 11%", // #0F1A2D (azul oscuro)
+        default800: "220 8% 25%",
+        default700: "220 8% 35%",
+        default600: "220 8% 38%",
+        default500: "220 8% 57%",
+        default100: "220 8% 96%",
+        default300: "220 8% 90%",
+        chartLabel: "220 8% 25%",
+        chartGird: "220 8% 90%"
+      },
+      dark: {
+        primary: "36 100% 60%", // más claro para modo oscuro
+        default900: "0 0% 100%",
+        default800: "220 8% 95%",
+        default700: "220 8% 85%",
+        default600: "220 8% 38%",
+        default500: "220 8% 45%",
+        default100: "220 8% 20%",
+        default300: "220 8% 30%",
+        chartLabel: "0 0% 100%",
+        chartGird: "220 8% 30%"
+      }
+    }
+  },  
 ] ;
 
