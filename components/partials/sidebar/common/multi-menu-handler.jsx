@@ -10,19 +10,12 @@ const MultiMenuHandler = ({
   toggleMultiMenu,
   className,
   trans,
-}: {
-  subItem: any,
-  subIndex: number,
-  activeMultiMenu: number | null,
-  toggleMultiMenu: (subIndex: number) => void,
-  className?: string,
-  trans: any
 }) => {
   return (
     <div
       onClick={() => toggleMultiMenu(subIndex)}
       className={cn(
-        "text-sm flex gap-3  rounded items-center transition-all duration-150 cursor-pointer  relative before:absolute  before: top-0 before:-left-5 before:w-[3px] before:h-0 before:transition-all before:duration-200",
+        "text-sm flex gap-3  rounded items-center transition-all duration-150 cursor-pointer  relative before:absolute  before: top-0 before:-left-5 before:w-[3px] before:h-0 before:transition-all before:duration-200 capitalize",
         className,
         {
           " text-primary  before:bg-primary   before:h-full ":
@@ -31,13 +24,13 @@ const MultiMenuHandler = ({
         }
       )}
     >
-      <span className="flex-1">{translate(subItem.title, trans)}</span>
+      <span className="flex-1 capitalize">{translate(subItem.title, trans)}</span>
       <div className="flex-none">
         <span
           className={cn(
-            "  [&>*]:transform [&>*]:transition-all [&>*]:duration-300",
+            "  *:transform *:transition-all *:duration-300",
             {
-              "[&>*]:rotate-90": activeMultiMenu === subIndex,
+              "*:rotate-90": activeMultiMenu === subIndex,
             }
           )}
         >

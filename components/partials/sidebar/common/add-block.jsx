@@ -7,17 +7,15 @@ import { Icon } from "@iconify/react";
 import Image from "next/image";
 import thumbnail from "@/public/images/all-img/thumbnail.png";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Dialog,
+  DialogHeader,
+  DialogTitle,
+  DialogContent } from "@/components/ui/dialog";
 const AddBlock = ({
   className,
   image = thumbnail,
   title = "Storage capacity",
   desc = " Out of your total storage on Premium Plan, you have used up 40%.",
-}: {
-  className?: string;
-  image?: any;
-  title?: string;
-  desc?: string;
 }) => {
   const [openVideo, setOpenVideo] = useState(false);
   return (
@@ -34,7 +32,7 @@ const AddBlock = ({
         </div>
         <div className={cn(" text-sm text-primary-foreground")}>{desc}</div>
         <div className="mt-4 relative">
-          <Image src={image} alt="footer-thumbnail" className="w-full h-full" priority={true} />
+          <Image src={image} alt="footer-thumbnail" className="w-full h-full" />
           <Button
             size="icon"
             type="button"
@@ -55,6 +53,9 @@ const AddBlock = ({
       </div>
       <Dialog open={openVideo}>
         <DialogContent size="lg" className="p-0" hiddenCloseIcon>
+        <DialogHeader className="hidden">
+          <DialogTitle className="hidden"></DialogTitle>
+        </DialogHeader>
           <Button
             size="icon"
             onClick={() => setOpenVideo(false)}
@@ -69,7 +70,7 @@ const AddBlock = ({
             title="YouTube video player"
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowFullScreen
+            allowFullScreen 
           ></iframe>
         </DialogContent>
       </Dialog>

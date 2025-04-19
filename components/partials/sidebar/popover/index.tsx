@@ -81,7 +81,6 @@ const PopoverSidebar = ({ trans }: { trans: string }) => {
           style={{ backgroundImage: `url(${sidebarBg})` }}
         ></div>
       )}
-      <SidebarLogo />
       <Separator />
       <ScrollArea
         className={cn("sidebar-menu  h-[calc(100%-80px)] ", {
@@ -106,11 +105,7 @@ const PopoverSidebar = ({ trans }: { trans: string }) => {
                 />
               )}
 
-              {/* menu label */}
-              {item.isHeader && !item.child && !collapsed && (
-                <MenuLabel item={item} trans={trans} />
-              )}
-
+            
               {/* sub menu */}
               {item.child && (
                 <>
@@ -123,17 +118,7 @@ const PopoverSidebar = ({ trans }: { trans: string }) => {
                     menuTitle={item.title}
                     trans={trans}
                   />
-                  {!collapsed && (
-                    <NestedSubMenu
-                      toggleMultiMenu={toggleMultiMenu}
-                      activeMultiMenu={activeMultiMenu}
-                      activeSubmenu={activeSubmenu}
-                      item={item}
-                      index={i}
-
-                      trans={trans}
-                    />
-                  )}
+                  
                 </>
               )}
             </li>

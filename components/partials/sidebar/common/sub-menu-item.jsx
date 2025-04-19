@@ -5,12 +5,7 @@ import React from "react";
 import { Badge } from "@/components/ui/badge";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-function LockLink({ href, children, subItem, trans }: {
-  href: string;
-  children: React.ReactNode;
-  subItem: any;
-  trans: any
-}) {
+function LockLink({ href, children, subItem, trans }) {
   if (subItem.badge) {
     return (
       <span className="text-sm flex space-x-3 items-center transition-all duration-150 opacity-50  cursor-not-allowed">
@@ -32,10 +27,7 @@ function LockLink({ href, children, subItem, trans }: {
   }
 }
 
-const SubMenuItem = ({ subItem, trans }: {
-  subItem: any;
-  trans: any
-}) => {
+const SubMenuItem = ({ subItem, trans }) => {
   const pathname = usePathname();
   const locationName = getDynamicPath(pathname);
   return (

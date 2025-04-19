@@ -10,7 +10,7 @@ import MenuItem from "./menu-item";
 import NestedMenus from "./nested-menus";
 import Link from "next/link";
 import FooterMenu from "./footer-menu";
-import { SiteLogo } from "@/components/svg";
+import Image from "next/image";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import LogoutFooter from "./logout-footer";
 import { useMediaQuery } from "@/hooks/use-media-query";
@@ -119,17 +119,17 @@ const ModuleSidebar = ({ trans }: { trans: any }) => {
       <div className="main-sidebar pointer-events-auto fixed z-[60] flex h-screen print:hidden left-0 top-0">
         <div
           className={cn(
-            "border-default-200 dark:border-default-300 pointer-events-auto relative z-20 flex h-full w-[72px] flex-col border-r border-dashed bg-card transition-all duration-300",
+            "border-default-200 dark:border-default-300 pointer-events-auto relative z-20 flex h-full w-[52px] flex-col border-r border-dashed bg-card transition-all duration-300",
             {
               "ltr:-translate-x-full rtl:translate-x-full ltr:xl:translate-x-0 rtl:xl:translate-x-0": !collapsed && subMenu,
               "translate-x-0": collapsed && subMenu,
             }
           )}
         >
-          <div className="pt-4">
-            <Link href="/dashboard">
-              <SiteLogo className="mx-auto text-primary h-8 w-8" />
-            </Link>
+          <div className="pt-2 flex justify-center items-center h-[60px]">
+            
+            <Image src="/images/solar/logo-solar.svg" alt="Logo Solar" width={40} height={40} className="mx-auto" />
+            
           </div>
           <ScrollArea className="pt-6 grow">
             {menus.map((item, i) => (
@@ -182,8 +182,6 @@ const ModuleSidebar = ({ trans }: { trans: any }) => {
               </>
             )}
           </h2>
-
-
           <ScrollArea className="flex-1 overflow-y-auto">
             <div className="px-4" dir={isRtl ? "rtl" : "ltr"}>
               <ul>
@@ -217,7 +215,6 @@ const ModuleSidebar = ({ trans }: { trans: any }) => {
               </ul>
             </div>
           </ScrollArea>
-
           {!collapsed && <LogoutFooter />}
         </div>
       </div>

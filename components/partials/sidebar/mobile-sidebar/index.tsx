@@ -2,15 +2,16 @@
 import React, { useState } from "react";
 import { cn, isLocationMatch } from "@/lib/utils";
 import { useSidebar, useThemeStore } from "@/store";
-import SidebarLogo from "../common/logo";
+import Image from "next/image";
 import { menusConfig } from "@/config/menus";
-import MenuLabel from "../common/menu-label";
+// import MenuLabel from "../common/menu-label";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePathname } from "next/navigation";
 import SingleMenuItem from "./single-menu-item";
 import SubMenuHandler from "./sub-menu-handler";
-import NestedSubMenu from "../common/nested-menus";
+// import NestedSubMenu from "../common/nested-menus";
+
 const MobileSidebar = ({ className, trans }: { className?: string, trans: any }) => {
   const { sidebarBg, mobileMenu, setMobileMenu } = useSidebar();
   const [activeSubmenu, setActiveSubmenu] = useState<number | null>(null);
@@ -79,7 +80,10 @@ const MobileSidebar = ({ className, trans }: { className?: string, trans: any })
             style={{ backgroundImage: `url(${sidebarBg})` }}
           ></div>
         )}
-        <SidebarLogo hovered={collapsed} />
+        <div className="flex justify-center items-center h-[60px] pt-4">
+          <Image src="/images/solar/side-logo-solar.svg" alt="Logo Solar" width={40} height={40} />
+        </div>
+
         <ScrollArea
           className={cn("sidebar-menu  h-[calc(100%-80px)] ", {
             "px-4": !collapsed,
@@ -98,10 +102,10 @@ const MobileSidebar = ({ className, trans }: { className?: string, trans: any })
                   <SingleMenuItem item={item} collapsed={collapsed} />
                 )}
 
-                {/* menu label */}
+                {/* menu label
                 {item.isHeader && !item.child && !collapsed && (
                   <MenuLabel item={item} trans={trans} />
-                )}
+                )} */}
 
                 {/* sub menu */}
                 {item.child && (
@@ -114,14 +118,14 @@ const MobileSidebar = ({ className, trans }: { className?: string, trans: any })
                       collapsed={collapsed}
                     />
 
-                    {!collapsed && (
+                    {/* {!collapsed && (
                       <NestedSubMenu
                         toggleMultiMenu={toggleMultiMenu}
                         activeMultiMenu={activeMultiMenu}
                         activeSubmenu={activeSubmenu}
                         item={item}
                         index={i} title={""} trans={undefined} />
-                    )}
+                    )} */}
                   </>
                 )}
               </li>

@@ -1,11 +1,7 @@
 import React from "react";
 import { cn, translate } from "@/lib/utils";
 
-const MenuLabel = ({ item, className, trans }: {
-  item: any,
-  className?: string,
-  trans: any
-}) => {
+const MenuLabel = ({ item, className, trans }) => {
   const { title } = item;
   return (
     <div
