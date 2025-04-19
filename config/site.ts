@@ -1,8 +1,8 @@
 
 
 export const siteConfig = {
-  name: "Enthra - Plataforma IoT",
-  description: "Monitoreo solar e indoor de equipos biomédicos",
+  name: "Enthra",
+  description: "Monitoreo IoT solar e indoor de equipos biomédicos",
   theme: "enthra",
   layout: "vertical",
   hideSideBar: false,

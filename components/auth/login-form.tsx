@@ -15,28 +15,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Link from "next/link";
-import Image from "next/image";
 import { SiteLogo } from "@/components/svg";
-import { Icon } from "@iconify/react";
-import { Checkbox } from "@/components/ui/checkbox";
-import { useToast } from "@/components/ui/use-toast";
-import { useMediaQuery } from "@/hooks/use-media-query";
-import googleIcon from "@/public/images/auth/google.png";
-import facebook from "@/public/images/auth/facebook.png";
-import twitter from "@/public/images/auth/twitter.png";
-import GithubIcon from "@/public/images/auth/github.png";
 
 const schema = z.object({
-  email: z.string().email({ message: "Tu correo no es válido." }),
-  password: z.string().min(4),
+  email: z.string().email({ message: "Correo inválido" }),
+  password: z.string().min(4, "La contraseña debe tener al menos 4 caracteres"),
 });
 
 const LogInForm = () => {
   const [isPending, setIsPending] = useState(false);
   const [passwordType, setPasswordType] = useState("password");
-  const isDesktop2xl = useMediaQuery("(max-width: 1530px)");
-  const { toast } = useToast();
   const router = useRouter();
   const params = useParams();
   const lang = params?.lang || "es";
@@ -63,15 +51,13 @@ const LogInForm = () => {
     setIsPending(true);
     try {
       const { user, result } = await signIn(data.email, data.password);
-      if (typeof window !== "undefined") {
-        localStorage.clear();
-      }
+      if (typeof window !== "undefined") localStorage.clear();
       user?.signOut?.();
 
       const idToken = result.getIdToken().getJwtToken();
       const payload = result.getIdToken().decodePayload();
-
       const client = new CognitoIdentityClient({ region: "us-east-1" });
+
       const identity = await client.send(
         new GetIdCommand({
           IdentityPoolId: "us-east-1:b6785497-e43f-4130-ad2e-4132710f1f53",
@@ -90,18 +76,13 @@ const LogInForm = () => {
         })
       );
 
-      if (!credentials.Credentials) {
-        throw new Error("No se pudieron obtener las credenciales");
-      }
+      if (!credentials.Credentials) throw new Error("No se pudieron obtener las credenciales");
 
       const groups = payload["cognito:groups"] || [];
-      const destino = (
+      const destino =
         groups.find((g: string) => g.trim().toLowerCase() === "solar")
           ? `/${lang}/solar`
-          : groups.find((g: string) => g.trim().toLowerCase() === "biomedico")
-          ? `/${lang}/biomedico`
-          : `/${lang}/biomedico`
-      );
+          : `/${lang}/biomedico`;
 
       localStorage.setItem(
         "session",
@@ -129,122 +110,62 @@ const LogInForm = () => {
       router.push(destino);
       reset();
     } catch {
-      toast({
-        title: "Error...",
-        description: "...",
-      });
+      console.log("Error de autenticación");
     } finally {
       setIsPending(false);
     }
   };
 
   return (
-    <div className="w-full py-10">
-      <Link href="/dashboard" className="inline-block">
-        <SiteLogo className="h-10 w-10 2xl:w-14 2xl:h-14 text-primary" />
-      </Link>
-      <div className="2xl:mt-8 mt-6 2xl:text-3xl text-2xl font-bold text-default-900">
-        Hey, Hello 👋
-      </div>
-      <div className="2xl:text-lg text-base text-default-600 2xl:mt-2 leading-6">
-        Enter the information you entered while registering.
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="mt-5 2xl:mt-7">
+    <div className="w-full py-10 text-default-900">
+    <div className="mb-6 flex justify-start">
+      <SiteLogo className="h-10 w-100" />
+    </div>
+        <h1 className="text-3xl font-bold mb-2">Inicia sesión</h1>
+      <p className="text-base text-default-600 mb-6">
+        Accede a tu plataforma IoT de Enthra
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
         <div>
-          <Label htmlFor="email" className="mb-2 font-medium text-default-600">
-            Email
-          </Label>
+          <Label htmlFor="email">Correo electrónico</Label>
           <Input
-            disabled={isPending}
-            {...register("email")}
-            type="email"
             id="email"
-            className={cn("", {
-              "border-destructive": errors.email,
-            })}
-            size={!isDesktop2xl ? "xl" : "lg"}
+            type="email"
+            {...register("email")}
+            disabled={isPending}
+            className={cn("", { "border-destructive": errors.email })}
           />
+          {errors.email && (
+            <p className="text-destructive text-sm mt-1">{errors.email.message}</p>
+          )}
         </div>
-        {errors.email && (
-          <div className="text-destructive mt-2">{errors.email.message}</div>
-        )}
-        <div className="mt-3.5">
-          <Label
-            htmlFor="password"
-            className="mb-2 font-medium text-default-600"
-          >
-            Password
-          </Label>
+        <div>
+          <Label htmlFor="password">Contraseña</Label>
           <div className="relative">
             <Input
-              disabled={isPending}
-              {...register("password")}
-              type={passwordType}
               id="password"
-              className="peer"
-              size={!isDesktop2xl ? "xl" : "lg"}
-              placeholder=" "
+              type={passwordType}
+              {...register("password")}
+              disabled={isPending}
             />
-            <div
-              className="absolute top-1/2 -translate-y-1/2 ltr:right-4 rtl:left-4 cursor-pointer"
+            <button
+              type="button"
               onClick={togglePasswordType}
+              className="absolute inset-y-0 right-3 text-default-400 text-sm"
             >
-              {passwordType === "password" ? (
-                <Icon icon="heroicons:eye" className="w-5 h-5 text-default-400" />
-              ) : (
-                <Icon icon="heroicons:eye-slash" className="w-5 h-5 text-default-400" />
-              )}
-            </div>
+              {passwordType === "password" ? "Mostrar" : "Ocultar"}
+            </button>
           </div>
+          {errors.password && (
+            <p className="text-destructive text-sm mt-1">{errors.password.message}</p>
+          )}
         </div>
-        {errors.password && (
-          <div className="text-destructive mt-2">{errors.password.message}</div>
-        )}
-        <div className="mt-5 mb-8 flex flex-wrap gap-2">
-          <div className="flex-1 flex items-center gap-1.5">
-            <Checkbox
-              size="sm"
-              className="border-default-300 mt-[1px]"
-              id="isRemebered"
-            />
-            <Label
-              htmlFor="isRemebered"
-              className="text-sm text-default-600 cursor-pointer whitespace-nowrap"
-            >
-              Remember me
-            </Label>
-          </div>
-          <Link href="/auth/forgot" className="flex-none text-sm text-primary">
-            Forget Password?
-          </Link>
-        </div>
-        <Button
-          className="w-full"
-          disabled={isPending}
-          size={!isDesktop2xl ? "lg" : "md"}
-        >
+        <Button type="submit" className="w-full text-white" disabled={isPending}>
           {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          {isPending ? "Cargando..." : "Sign In"}
+          {isPending ? "Ingresando..." : "Ingresar"}
         </Button>
+
       </form>
-      <div className="mt-6 xl:mt-8 flex flex-wrap justify-center gap-4">
-        <Button type="button" size="icon" variant="outline" className="rounded-full border-default-300 hover:bg-transparent" disabled={isPending}>
-          <Image src={googleIcon} alt="google" className="w-5 h-5" priority />
-        </Button>
-        <Button type="button" size="icon" variant="outline" className="rounded-full border-default-300 hover:bg-transparent" disabled={isPending}>
-          <Image src={GithubIcon} alt="github" className="w-5 h-5" priority />
-        </Button>
-        <Button type="button" size="icon" variant="outline" className="rounded-full border-default-300 hover:bg-transparent">
-          <Image src={facebook} alt="facebook" className="w-5 h-5" priority />
-        </Button>
-        <Button type="button" size="icon" variant="outline" className="rounded-full border-default-300 hover:bg-transparent">
-          <Image src={twitter} alt="twitter" className="w-5 h-5" priority />
-        </Button>
-      </div>
-      <div className="mt-5 2xl:mt-8 text-center text-base text-default-600">
-        Don't have an account?
-        <Link href="/auth/register" className="text-primary"> Sign Up </Link>
-      </div>
     </div>
   );
 };

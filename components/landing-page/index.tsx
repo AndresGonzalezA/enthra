@@ -2,6 +2,7 @@
 import Header from "./header";
 import Hero from "./hero";
 import Stats from "./stats";
+import AllComponents from "./all-components";
 import AboutUs from "./about-us";
 import ProjectTools from "./project-tools";
 import PricingPlan from "./pricing-plan";
@@ -19,6 +20,7 @@ const LandingPageView = () => {
     <div className="bg-background">
       <Header />
       <Hero />
+      <AllComponents />
       <Stats />
       <AboutUs />
       <ProjectTools />

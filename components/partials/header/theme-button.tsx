@@ -26,17 +26,17 @@ const ThemeButton = () => {
            hover:text-primary text-default-500 dark:text-default-800  rounded-full 
             "
         >
-          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+          <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0 text-primary" />
+          <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100 text-primary" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="p-2">
         <DropdownMenuItem
-          onClick={() => setTheme("light")}
+          onClick={() => setTheme("enthra")}
           className={cn(
             "p-2 font-medium text-sm text-default-600 cursor-pointer mb-[2px] ",
             {
-              "bg-primary text-primary-foreground": theme === "light",
+              "bg-primary text-primary-foreground": theme === "enthra",
             }
           )}
         >
@@ -44,7 +44,7 @@ const ThemeButton = () => {
           <span className="mr-2">Light</span>
           <Check
             className={cn("w-4 h-4 flex-none ml-auto ", {
-              hidden: theme !== "light",
+              hidden: theme !== "enthra",
             })}
           />
         </DropdownMenuItem>
